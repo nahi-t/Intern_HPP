@@ -1,9 +1,7 @@
 {
-	"folders": [
-		{
-			"name": "intern",
-			"path": "."
-		}
-	],
-	"settings": {}
+    "folders": [
+        {
+            "path": "frontend"
+        }
+    ]
 }
