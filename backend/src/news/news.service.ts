@@ -3,7 +3,7 @@ import { CloudinaryService } from './../cloudinary/cloudinary.service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { News } from './entities/news.entity';
+import { News, NewsType } from './entities/news.entity';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { UpdateNewsDto } from './dto/update-news.dto';
 
@@ -16,22 +16,28 @@ export class NewsService {
   ) {}
 
  
-  async create(createNewsDto:CreateNewsDto,file?:Express.Multer.File){
-    let imageUrl:string |null=null
+ async create(createNewsDto: CreateNewsDto, file?: Express.Multer.File) {
+  let imageUrl: string | null = null;
 
-    if (file){
-       const uploadResult = await this.cloudinaryService.uploadImage(
-        file
-      );
-          imageUrl = uploadResult.secure_url; 
-    }
-    const newNews =this.newsRepository.create({
-      ...createNewsDto,
-      image:imageUrl
-    })
-    return await this.newsRepository.save(newNews)
-
+  if (file) {
+    const uploadResult = await this.cloudinaryService.uploadImage(file);
+    imageUrl = uploadResult.secure_url;
   }
+
+  // Prepare data with all fields
+  const newsData = {
+    ...createNewsDto,
+    image: imageUrl,                     
+    type: createNewsDto.type as NewsType, 
+    featured: createNewsDto.featured ?? false, 
+  };
+
+  // Create an entity instance (optional but recommended)
+  const newsEntity = this.newsRepository.create(newsData);
+
+  // Save and return the persisted entity
+  return await this.newsRepository.save(newsEntity);
+}
 
   async findAll(): Promise<News[]> {
     return await this.newsRepository.find({

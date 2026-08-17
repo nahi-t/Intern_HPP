@@ -34,6 +34,7 @@ export const useServices = () => {
     if (result) setServices(result);
   }, [handleAsync]);
 
+
   const fetchService = useCallback(async (id: number) => {
     return await handleAsync(() => getService(id));
   }, [handleAsync]);

@@ -8,7 +8,7 @@ interface NewsCardProps {
   title: string;
   excerpt?: string | null;
   date: string;
-  image?: string | null;
+ image?: string;
   category?: string;
   slug?: string;
 }
@@ -27,20 +27,21 @@ const newscard: React.FC<NewsCardProps> = ({
   return (
     <div className="group bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full">
       
-      Image Section
-      <div className="relative h-48 w-full overflow-hidden flex-shrink-0">
-        {/* <Image
-          src={image || fallbackImage}
-          alt={title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        /> */}
-        {/* Category Badge */}
-        <div className="absolute top-3 left-3 bg-green-600/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
-          {category}
-        </div>
-      </div>
+    
+     {/* Image Section */}
+<div className="relative h-48 w-full overflow-hidden flex-shrink-0">
+  <Image
+    src={image || fallbackImage}
+    alt={title}
+    fill
+    className="object-cover group-hover:scale-105 transition-transform duration-500"
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  />
+  {/* Category Badge */}
+  <div className="absolute top-3 left-3 bg-green-600/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
+    {category}
+  </div>
+</div>
 
       {/* Content Section */}
       <div className="p-5 flex flex-col flex-1">

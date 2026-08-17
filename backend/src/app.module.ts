@@ -9,6 +9,7 @@ import { HeroModule } from './hero-image/hero-image.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ServiceModule } from './service/service.module';
 import { NewsModule } from './news/news.module';
+import { AnnouncementModule } from './announcement/announcement.module';
 
 
 @Module({
@@ -24,6 +25,7 @@ import { NewsModule } from './news/news.module';
     CloudinaryModule,
     ServiceModule,
     NewsModule,
+    AnnouncementModule,
     ],
   controllers: [AppController],
   providers: [AppService],

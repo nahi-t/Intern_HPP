@@ -8,6 +8,7 @@ import ServiceManagement from '@/components/dashboard/Home/ServiceManagement';
 import AdminSidebar from '@/components/dashboard/AdminSidebar';
 import { ActiveView, NAV_ITEMS } from '@/constants/adminNavItems';
 import NewsManagement from '@/components/dashboard/Home/ NewsManagement';
+import AnnouncementManagement from '@/components/dashboard/Home/AnnouncementManagement';
 
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<ActiveView>('hero-settings');
@@ -59,6 +60,9 @@ export default function DashboardPage() {
           {activeView === 'hero-settings' && <HeroSettings />}
           {activeView === 'services' && <ServiceManagement />}
           {activeView === 'news' && <NewsManagement />}
+           {activeView === 'announcement' && <AnnouncementManagement />
+}
+
           {/* {activeView === 'Ledership' && (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-900/50 border border-slate-800/80 rounded-2xl max-w-5xl mx-auto">
               <div className="w-16 h-16 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-3xl mb-4">

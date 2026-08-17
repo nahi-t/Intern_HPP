@@ -5,6 +5,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNews } from '@/hooks/home/useNews';
 import type { NewsItem } from '@/types';
 
+// The possible news types (matching backend enum)
+const NEWS_TYPES = ['news', 'press-release', 'event'] as const;
+type NewsType = typeof NEWS_TYPES[number];
+
 export default function NewsManagement() {
   const { news, loading, error, fetchAll, create, update, remove } = useNews();
 
@@ -16,6 +20,9 @@ export default function NewsManagement() {
   const [title, setTitle] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [date, setDate] = useState('');
+  const [category, setCategory] = useState('');
+  const [featured, setFeatured] = useState(false);
+  const [type, setType] = useState<NewsType>('news');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +38,9 @@ export default function NewsManagement() {
     setTitle('');
     setExcerpt('');
     setDate(new Date().toISOString().split('T')[0]);
+    setCategory('');
+    setFeatured(false);
+    setType('news');
     setImageFile(null);
     setImagePreview(null);
     setIsModalOpen(true);
@@ -42,6 +52,9 @@ export default function NewsManagement() {
     setTitle(item.title);
     setExcerpt(item.excerpt || '');
     setDate(item.date);
+    setCategory(item.category || '');
+    setFeatured(item.featured ?? false);
+    setType((item.type as NewsType) || 'news');
     setImageFile(null);
     setImagePreview(item.image || null);
     setIsModalOpen(true);
@@ -63,6 +76,9 @@ export default function NewsManagement() {
     formData.append('title', title);
     if (excerpt) formData.append('excerpt', excerpt);
     formData.append('date', date);
+    if (category) formData.append('category', category);
+    formData.append('featured', String(featured));   // boolean -> string
+    formData.append('type', type);                   // enum as string
     if (imageFile) formData.append('image', imageFile);
 
     try {
@@ -76,6 +92,9 @@ export default function NewsManagement() {
       setTitle('');
       setExcerpt('');
       setDate('');
+      setCategory('');
+      setFeatured(false);
+      setType('news');
       setImageFile(null);
       setImagePreview(null);
     } catch (err) {
@@ -120,6 +139,9 @@ export default function NewsManagement() {
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3 hidden md:table-cell">Excerpt</th>
                 <th className="px-4 py-3">Date</th>
+                <th className="px-4 py-3 hidden lg:table-cell">Category</th>
+                <th className="px-4 py-3 hidden xl:table-cell">Featured</th>
+                <th className="px-4 py-3 hidden 2xl:table-cell">Type</th>
                 <th className="px-4 py-3 hidden lg:table-cell">Image</th>
                 <th className="px-4 py-3 text-center">Actions</th>
               </tr>
@@ -127,7 +149,7 @@ export default function NewsManagement() {
             <tbody>
               {news.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-8 text-slate-400">
+                  <td colSpan={8} className="text-center py-8 text-slate-400">
                     No news articles found.
                   </td>
                 </tr>
@@ -139,6 +161,17 @@ export default function NewsManagement() {
                       {item.excerpt || '—'}
                     </td>
                     <td className="px-4 py-3">{new Date(item.date).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 hidden lg:table-cell">
+                      {item.category || '—'}
+                    </td>
+                    <td className="px-4 py-3 hidden xl:table-cell">
+                      {item.featured ? '✅ Yes' : '❌ No'}
+                    </td>
+                    <td className="px-4 py-3 hidden 2xl:table-cell">
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-slate-700 text-slate-300">
+                        {item.type || 'news'}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       {item.image ? (
                         <img
@@ -213,6 +246,48 @@ export default function NewsManagement() {
                   className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                   required
                 />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Category</label>
+                <input
+                  type="text"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  placeholder="e.g. Press Release, Event"
+                />
+              </div>
+
+              {/* Featured */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  checked={featured}
+                  onChange={(e) => setFeatured(e.target.checked)}
+                  className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-teal-600 focus:ring-teal-500"
+                />
+                <label htmlFor="featured" className="text-sm font-medium text-slate-300">
+                  Featured
+                </label>
+              </div>
+
+              {/* Type */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Type</label>
+                <select
+                  value={type}
+                  onChange={(e) => setType(e.target.value as NewsType)}
+                  className="w-full px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                >
+                  {NEWS_TYPES.map((t) => (
+                    <option key={t} value={t}>
+                      {t.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Image upload */}

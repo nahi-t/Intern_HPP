@@ -12,6 +12,7 @@ import { SERVICES } from '@/constants/homeConstants';
 import { newsData } from '@/constants/newsData';
 
 
+
 export default function HomePage() {
   const { services, loading: servicesLoading, error: servicesError, fetchServices } = useServices();
   const { news, loading: newsLoading, error: newsError, fetchAll } = useNews();
@@ -19,12 +20,15 @@ export default function HomePage() {
   useEffect(() => {
     fetchServices();
     fetchAll();
+  
   }, []);
 
-  // const displayServices = services.length > 0 ? SERVICES : SERVICES;
-  // const displayNews = news.length > 0 ? NEWS : NEWS;
-const  displayServices=SERVICES
-const displayNews = newsData
+// ✅ Corrected version
+const displayServices = services.length > 0 ? services : SERVICES;
+  const displayNews = news.length > 0 ? news : newsData;
+// const  displayServices=SERVICES
+// const displayNews = newsData
+
 
   return (
     <>
@@ -47,6 +51,7 @@ const displayNews = newsData
               {displayServices.map((service) => (
                 <ServiceCard key={service.id} service={service} />
               ))}
+     
             </div>
           )}
         </div>
@@ -68,7 +73,7 @@ const displayNews = newsData
                   title={item.title}
                   excerpt={item.excerpt}
                   date={item.date}
-                  // image={item.}c
+                  image={item.image}
                 />
               ))}
             </div>

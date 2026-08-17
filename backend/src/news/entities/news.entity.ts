@@ -1,5 +1,17 @@
 // src/news/news.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+export enum NewsType {
+  NEWS = 'news',
+  PRESS_RELEASE = 'press-release',
+  EVENT = 'event',
+}
 
 @Entity('news')
 export class News {
@@ -13,10 +25,23 @@ export class News {
   excerpt!: string;
 
   @Column({ type: 'date' })
-  date!: string; // or Date, depending on your preference
+  date!: string; // ISO date string
 
   @Column({ type: 'varchar', length: 500, nullable: true })
-  image!: string | null; // URL or file path
+  image!: string | null;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  category!: string | null;
+
+  @Column({ type: 'boolean', default: false })
+  featured!: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: NewsType,
+    default: NewsType.NEWS,
+  })
+  type!: NewsType;
 
   @CreateDateColumn()
   createdAt!: Date;

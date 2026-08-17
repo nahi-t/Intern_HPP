@@ -53,8 +53,26 @@ export interface NewsItem {
   id: number;
   title: string;
   excerpt?: string | null;
-  date: string;
-  image?: string;
+  date: string; // ISO date string
+  image?: string | null; // URL or null
+  category?: string | null; // e.g., "Press Release"
+  featured: boolean; // default false
+  type: 'news' | 'press-release' | 'event'; // or simply string if you prefer
+  createdAt: string; // ISO datetime
+  updatedAt: string; // ISO datetime
+}
+
+export type AnnouncementType = 'Public Notice' | 'Government Directive' | 'Service Update';
+export type AnnouncementPriority = 'high' | 'medium' | 'low';
+
+export interface AnnouncementItem {
+  id: number;
+  title: string;
+  excerpt?: string | null;
+  date: string; // ISO
+  type: AnnouncementType;
+  priority: AnnouncementPriority;
+  image?: string | null;
   createdAt: string;
   updatedAt: string;
 }
