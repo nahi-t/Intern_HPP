@@ -12,7 +12,7 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ service, onClick, className = '' }) => {
   const { image, title, description } = service;
 
-  const imageSrc = image || 'https://via.placeholder.com/400x300?text=No+Image';
+  const imageSrc = image ||undefined;
 
   const handleClick = () => {
     if (onClick) onClick(service);
