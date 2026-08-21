@@ -1,30 +1,85 @@
-// src/app/gallery/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { mediaData, categories, MediaItem } from '@/constants/mediaData';
+import { mediaData as localMediaData, categories, MediaItem } from '@/constants/mediaData';
+import { apiClient } from '@/lib/api'; // adjust path to your api.ts
+
+// Helper to map backend "GalleryItem" to frontend "MediaItem"
+function mapBackendToFrontend(item: any): MediaItem {
+  return {
+    id: item.id,
+    title: item.title,
+    description: item.description || '',
+    category: item.category,
+    type: item.type as 'image' | 'video',
+    thumbnailUrl: item.thumbnailUrl,
+    mediaUrl: item.mediaUrl,
+    // use createdAt as date, or format it
+    date: new Date(item.createdAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    }),
+  };
+}
 
 export default function GalleryPage() {
   const [activeTab, setActiveTab] = useState('All');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
+  
+  // State for dynamic data
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [usingLocalData, setUsingLocalData] = useState(false);
 
-  // Filter logic based on selected tab
-  const filteredMedia = activeTab === 'All'
-    ? mediaData
-    : mediaData.filter((item) => item.category === activeTab);
+  // Fetch function
+  const fetchGallery = async (category: string) => {
+    setLoading(true);
+    setError(null);
+    setUsingLocalData(false);
 
-  // Helper to close the lightbox
+    try {
+      const params = category !== 'All' ? { category } : {};
+      const response = await apiClient.get('/gallery', { params });
+      const data = response.data; // assuming it returns an array
+
+      // Map backend data to frontend format
+      const mapped = data.map(mapBackendToFrontend);
+      setMediaItems(mapped);
+    } catch (err) {
+      console.warn('Failed to fetch from API, falling back to local data:', err);
+      // Fallback to local data
+      const filtered = category === 'All'
+        ? localMediaData
+        : localMediaData.filter((item) => item.category === category);
+      setMediaItems(filtered);
+      setUsingLocalData(true);
+      setError(null); // clear error since we have fallback
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Refetch when tab changes
+  useEffect(() => {
+    fetchGallery(activeTab);
+  }, [activeTab]);
+
+  // Derived filtered data (already filtered by fetch, but we can use mediaItems directly)
+  const filteredMedia = mediaItems;
+
+  // Lightbox helpers
   const closeLightbox = () => setSelectedMedia(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50/20">
       
-      {/* 1. Hero Section */}
+      {/* Hero Section (unchanged) */}
       <div className="relative bg-gray-900 py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green-950 via-green-900/80 to-gray-900 opacity-90" />
         <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255, 204, 0, 0.1) 0%, transparent 50%)' }} />
-        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-4">
             Photo & Video <span className="text-yellow-400">Gallery</span>
@@ -35,7 +90,7 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      {/* 2. Filter Tabs */}
+      {/* Filter Tabs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
         <div className="flex flex-wrap justify-center gap-2 md:gap-4 border-b border-gray-200 pb-4">
           {categories.map((category) => (
@@ -52,11 +107,21 @@ export default function GalleryPage() {
             </button>
           ))}
         </div>
+        {/* Indicator for local data fallback */}
+        {usingLocalData && (
+          <div className="mt-2 text-center text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-md py-1 px-3 inline-block mx-auto">
+            ⚡ Showing offline data (network unavailable)
+          </div>
+        )}
       </div>
 
-      {/* 3. Gallery Grid */}
+      {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        {filteredMedia.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+          </div>
+        ) : filteredMedia.length === 0 ? (
           <div className="text-center py-20 text-gray-500">
             <p className="text-lg">No media found for this category.</p>
           </div>
@@ -75,6 +140,7 @@ export default function GalleryPage() {
                     alt={item.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
+                     unoptimized={true}
                   />
                   
                   {/* Video Play Button Overlay */}
@@ -115,13 +181,12 @@ export default function GalleryPage() {
         )}
       </div>
 
-      {/* 4. Full-Screen Lightbox Modal */}
+      {/* Lightbox (unchanged) */}
       {selectedMedia && (
         <div 
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 md:p-8 animate-in fade-in duration-200"
           onClick={closeLightbox}
         >
-          {/* Close Button */}
           <button 
             onClick={closeLightbox}
             className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10"
@@ -131,12 +196,10 @@ export default function GalleryPage() {
             </svg>
           </button>
 
-          {/* Media Content Area */}
           <div 
             className="relative w-full max-w-5xl max-h-[90vh] rounded-xl overflow-hidden shadow-2xl"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside media
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Render Image */}
             {selectedMedia.type === 'image' && (
               <div className="relative w-full h-full max-h-[90vh]">
                 <Image
@@ -145,11 +208,11 @@ export default function GalleryPage() {
                   fill
                   className="object-contain"
                   sizes="(max-width: 1024px) 100vw, 1024px"
+                   unoptimized={true}
                 />
               </div>
             )}
 
-            {/* Render Video (YouTube Embed) */}
             {selectedMedia.type === 'video' && (
               <div className="w-full h-[50vh] md:h-[80vh] bg-black">
                 <iframe
@@ -162,7 +225,6 @@ export default function GalleryPage() {
               </div>
             )}
 
-            {/* Caption Bar */}
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 md:p-8 text-white">
               <h3 className="text-2xl font-bold mb-2">{selectedMedia.title}</h3>
               <p className="text-gray-300 text-sm">{selectedMedia.description}</p>

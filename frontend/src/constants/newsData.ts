@@ -1,7 +1,7 @@
 // src/lib/data/newsData.ts
 
 export type NewsCategory = 'General' | 'Press Release' | 'Institutional Update' | 'Event';
-export type AnnouncementType = 'Public Notice' | 'Government Directive' | 'Service Update';
+export type AnnouncementType = 'Public Notice' | 'Government Directive' | 'Service Update'|'image';
 
 export interface NewsItem {
   id: string;
@@ -19,6 +19,7 @@ export interface AnnouncementItem {
   title: string;
   excerpt: string;
   date: string;
+ 
   type: AnnouncementType;
   priority: 'high' | 'medium' | 'low';
   typeCategory: 'announcement';

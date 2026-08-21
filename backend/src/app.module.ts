@@ -10,6 +10,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ServiceModule } from './service/service.module';
 import { NewsModule } from './news/news.module';
 import { AnnouncementModule } from './announcement/announcement.module';
+import { GalleryModule } from './gallery/gallery.module';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { AnnouncementModule } from './announcement/announcement.module';
     ServiceModule,
     NewsModule,
     AnnouncementModule,
+    GalleryModule,
     ],
   controllers: [AppController],
   providers: [AppService],

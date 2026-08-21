@@ -7,6 +7,16 @@ export const categories = [
   'Training Programs',
   'Community Engagement',
 ];
+export const CATEGORIES = [
+  'All',
+  'Institutional Activities',
+  'Events',
+  'Training Programs',
+  'Community Engagement',
+] as const;
+
+// 👇 Export this type
+export type Category = typeof CATEGORIES[number];
 
 export interface MediaItem {
   id: string;

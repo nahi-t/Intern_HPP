@@ -73,7 +73,7 @@ const displayServices = services.length > 0 ? services : SERVICES;
                   title={item.title}
                   excerpt={item.excerpt}
                   date={item.date}
-                  image={item.image}
+                  // image={item.image}
                 />
               ))}
             </div>

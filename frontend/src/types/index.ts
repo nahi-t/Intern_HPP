@@ -62,7 +62,7 @@ export interface NewsItem {
   updatedAt: string; // ISO datetime
 }
 
-export type AnnouncementType = 'Public Notice' | 'Government Directive' | 'Service Update';
+export type AnnouncementType = 'Public Notice' | 'Government Directive' | 'Service Update'|'image';
 export type AnnouncementPriority = 'high' | 'medium' | 'low';
 
 export interface AnnouncementItem {

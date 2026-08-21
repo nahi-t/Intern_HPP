@@ -9,6 +9,8 @@ import AdminSidebar from '@/components/dashboard/AdminSidebar';
 import { ActiveView, NAV_ITEMS } from '@/constants/adminNavItems';
 import NewsManagement from '@/components/dashboard/Home/ NewsManagement';
 import AnnouncementManagement from '@/components/dashboard/Home/AnnouncementManagement';
+import GalleryPage from '@/app/(main)/gallery/page';
+import AdminGalleryPage from '@/components/dashboard/gallery/gallery';
 
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<ActiveView>('hero-settings');
@@ -60,8 +62,9 @@ export default function DashboardPage() {
           {activeView === 'hero-settings' && <HeroSettings />}
           {activeView === 'services' && <ServiceManagement />}
           {activeView === 'news' && <NewsManagement />}
-           {activeView === 'announcement' && <AnnouncementManagement />
-}
+           {activeView === 'announcement' && <AnnouncementManagement />}
+          {activeView === 'gallery' && <AdminGalleryPage />}
+
 
           {/* {activeView === 'Ledership' && (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-900/50 border border-slate-800/80 rounded-2xl max-w-5xl mx-auto">
