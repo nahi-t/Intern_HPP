@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const decoded = jwtDecode<DecodedToken>(accessToken);
     const userData: User = {
+        id: decoded.sub, 
       firstName: decoded.email.split('@')[0] || 'User',
       lastName: '',
       email: decoded.email,
@@ -83,6 +84,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const decoded = jwtDecode<DecodedToken>(accessToken);
     const userData: User = {
+        id: decoded.sub, 
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
