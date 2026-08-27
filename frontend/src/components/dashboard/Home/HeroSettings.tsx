@@ -93,13 +93,13 @@ export default function HeroSettings(): React.JSX.Element {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6 text-slate-100">
+    <div className="w-full max-w-5xl mx-auto space-y-6 text-slate-100 px-4 sm:px-6 lg:px-0">
       
       {/* ─── SECTION HEADER ─── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
-            <span>🖼️</span> Hero Canvas Settings
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
+            <span></span> Hero  Settings
           </h2>
           <p className="text-xs text-slate-400 mt-1">
             Configure main headlines, promotional copy, and background image assets.
@@ -115,7 +115,7 @@ export default function HeroSettings(): React.JSX.Element {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* ─── LEFT COLUMN: TEXT CONFIGURATION ─── */}
-          <div className="lg:col-span-2 space-y-5 bg-slate-900/50 border border-slate-800/80 p-6 rounded-2xl backdrop-blur-sm">
+          <div className="lg:col-span-2 space-y-5 bg-slate-900/50 border border-slate-800/80 p-4 sm:p-6 rounded-2xl backdrop-blur-sm">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-teal-400 border-b border-slate-800/80 pb-3">
               Typography &amp; Copywriting
             </h3>
@@ -161,7 +161,7 @@ export default function HeroSettings(): React.JSX.Element {
           </div>
 
           {/* ─── RIGHT COLUMN: MEDIA ASSET MANAGER ─── */}
-          <div className="space-y-5 bg-slate-900/50 border border-slate-800/80 p-6 rounded-2xl backdrop-blur-sm flex flex-col justify-between">
+          <div className="space-y-5 bg-slate-900/50 border border-slate-800/80 p-4 sm:p-6 rounded-2xl backdrop-blur-sm flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center border-b border-slate-800/80 pb-3 mb-4">
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-teal-400">
@@ -177,7 +177,7 @@ export default function HeroSettings(): React.JSX.Element {
               </p>
 
               {/* Asset Grid */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {/* Previews */}
                 {previewUrls.map((url, index) => (
                   <div key={index} className="relative h-24 group rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
@@ -225,11 +225,11 @@ export default function HeroSettings(): React.JSX.Element {
         </div>
 
         {/* ─── ACTION SUBMIT BUTTON ─── */}
-        <div className="flex justify-end pt-2">
+        <div className="flex flex-col sm:flex-row justify-end pt-2">
           <button 
             type="submit" 
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-teal-600/20 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs rounded-xl shadow-lg shadow-teal-600/20 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>

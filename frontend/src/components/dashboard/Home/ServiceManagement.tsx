@@ -82,7 +82,7 @@ const ServiceManagement: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-slate-100 flex items-center gap-2">
-            <span>⚙️</span> Service Management
+            <span></span> Service Management
           </h2>
           <p className="text-xs text-slate-400 mt-1">
             Create, manage, and remove public-facing service offerings.
