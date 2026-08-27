@@ -14,7 +14,7 @@ interface NewsCardProps {
 }
 
 const newscard: React.FC<NewsCardProps> = ({ 
-  // id, 
+  id, 
   title, 
   excerpt, 
   date, 

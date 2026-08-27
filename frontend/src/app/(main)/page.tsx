@@ -15,19 +15,24 @@ import { newsData } from '@/constants/newsData';
 
 export default function HomePage() {
   const { services, loading: servicesLoading, error: servicesError, fetchServices } = useServices();
-  const { news, loading: newsLoading, error: newsError, fetchAll } = useNews();
+   const { news, loading: newsLoading, error: newsError, fetchAll: fetchNews } = useNews();
 
   useEffect(() => {
     fetchServices();
-    fetchAll();
+    fetchNews();
   
   }, []);
 
 // ✅ Corrected version
 const displayServices = services.length > 0 ? services : SERVICES;
-  const displayNews = news.length > 0 ? news : newsData;
+  const displayNews = (news && news.length > 0) ? news : newsData;
 // const  displayServices=SERVICES
 // const displayNews = newsData
+ const allItems = [
+    ...displayNews.map((item) => ({ ...item, kind: 'news' as const })),
+    
+  ];
+  
 
 
   return (
@@ -67,14 +72,16 @@ const displayServices = services.length > 0 ? services : SERVICES;
 
           {!newsLoading && !newsError && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
-              {displayNews.map((item) => (
+              {allItems.map((item) => (
                 <NewsCard
-                  id={item.id}
-                  title={item.title}
-                  excerpt={item.excerpt}
-                  date={item.date}
-                  // image={item.}
-                />
+    key={item.id}
+    id={item.id}
+    title={item.title}
+    excerpt={item.excerpt || ''}
+    date={item.date}
+    image={'image' in item && item.image ? item.image : undefined}
+  
+  />
               ))}
             </div>
           )}
