@@ -17,7 +17,7 @@ const UserManager: React.FC = () => {
     password: '',
     role: Role.ADMIN,
   });
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | number| null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
 
   // Fetch all users
@@ -68,7 +68,7 @@ const UserManager: React.FC = () => {
   };
 
   // Delete user
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string|number) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     setLoading(true);
     setError(null);

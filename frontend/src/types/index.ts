@@ -78,7 +78,7 @@ export interface AnnouncementItem {
 }
 
 export interface User {
-  id: string; // or number, depending on your backend
+    id: string | number;  // or number, depending on your backend
   firstName: string;
   lastName: string;
   email: string;
