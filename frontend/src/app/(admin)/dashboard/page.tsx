@@ -9,8 +9,10 @@ import { ActiveView, NAV_ITEMS } from '@/constants/adminNavItems';
 import NewsManagement from '@/components/dashboard/Home/ NewsManagement';
 import AnnouncementManagement from '@/components/dashboard/Home/AnnouncementManagement';
 import AdminGalleryPage from '@/components/dashboard/gallery/gallery';
+import { useAuth } from '@/contexts/AuthContext'; 
 
 export default function DashboardPage() {
+    const { user } = useAuth(); 
   const [activeView, setActiveView] = useState<ActiveView>('hero-settings');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -34,6 +36,8 @@ export default function DashboardPage() {
         setActiveView={setActiveView}
         isSidebarOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
+        userName={user?.firstName || 'Guest'}
+        userRole={user?.role || 'Staff'}
       />
 
       {/* Backdrop */}
@@ -51,7 +55,7 @@ export default function DashboardPage() {
           flex-1 flex flex-col min-h-screen bg-slate-950
           transition-all duration-300
           ml-0
-          ${isSidebarOpen ? 'md:ml-64' : 'md:ml-20'}
+          md:ml-64
           pt-16 md:pt-20
         `}
       >

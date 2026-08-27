@@ -9,6 +9,9 @@ interface AdminSidebarProps {
   setActiveView: (view: ActiveView) => void;
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
+  // Real login data passed from JWT Auth Context
+  userName: string; 
+  userRole: string;
 }
 
 export default function AdminSidebar({
@@ -16,31 +19,39 @@ export default function AdminSidebar({
   setActiveView,
   isSidebarOpen,
   toggleSidebar,
+  userName, 
+  userRole,
 }: AdminSidebarProps) {
   const handleNavClick = (key: ActiveView) => {
     setActiveView(key);
-    // Close sidebar on mobile after selection
-    if (window.innerWidth < 768) {
-      toggleSidebar();
-    }
+    if (window.innerWidth < 768) toggleSidebar();
   };
+
+  // Generate dynamic initials (e.g., "John Doe" -> "JD")
+  const initials = userName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase() || 'U';
 
   return (
     <aside
       className={`
-        fixed md:relative inset-y-0 left-0 z-50
-        h-full w-64 bg-slate-900/95 backdrop-blur-md border-r border-slate-800/80
+        fixed left-0 z-50
+        w-64 bg-slate-900/95 backdrop-blur-md border-r border-slate-800/80
         flex flex-col transition-transform duration-300 ease-in-out
+        top-20 h-[calc(100vh-5rem)]        
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         md:translate-x-0
       `}
     >
-      {/* Sidebar header with close button (mobile only) */}
+      {/* Header with HPP CMS */}
       <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800/80 shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-xl text-teal-400">⚡</span>
           <span className="font-bold text-sm text-slate-100 tracking-tight">
-            Admin<span className="text-teal-400">CMS</span>
+            HPP<span className="text-teal-400">CMS</span>
           </span>
         </div>
         <button
@@ -54,6 +65,23 @@ export default function AdminSidebar({
         </button>
       </div>
 
+      {/* Real Login Profile Section */}
+      <div className="px-4 py-6 border-b border-slate-800/80 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+              {initials}
+            </div>
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-900 rounded-full"></span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-slate-100 truncate">{userName}</p>
+            <p className="text-xs text-teal-400 font-medium">{userRole}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const isActive = activeView === item.key;
@@ -79,7 +107,7 @@ export default function AdminSidebar({
       </nav>
 
       <div className="border-t border-slate-800/80 p-4 text-xs text-slate-500 shrink-0">
-        <p>v2.0.1 • Logged in</p>
+        <p>v2.0.1 • Logged in as {userRole}</p>
       </div>
     </aside>
   );
