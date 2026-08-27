@@ -10,6 +10,7 @@ import NewsManagement from '@/components/dashboard/Home/ NewsManagement';
 import AnnouncementManagement from '@/components/dashboard/Home/AnnouncementManagement';
 import AdminGalleryPage from '@/components/dashboard/gallery/gallery';
 import { useAuth } from '@/contexts/AuthContext'; 
+import UserManager from '@/components/dashboard/user/UserManager';
 
 export default function DashboardPage() {
     const { user } = useAuth(); 
@@ -101,6 +102,7 @@ export default function DashboardPage() {
           {activeView === 'news' && <NewsManagement />}
           {activeView === 'announcement' && <AnnouncementManagement />}
           {activeView === 'gallery' && <AdminGalleryPage />}
+            {activeView === 'user' && <UserManager />}
           {activeView === 'leadership' && (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-slate-900/50 border border-slate-800/80 rounded-2xl max-w-5xl mx-auto">
               <div className="w-16 h-16 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center text-3xl mb-4">👥</div>

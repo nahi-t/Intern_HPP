@@ -1,7 +1,7 @@
 // src/constants/adminNavItems.ts
 import React from 'react';
 
-export type ActiveView = 'hero-settings' | 'services' | 'news' | 'leadership'|'announcement'|'gallery';
+export type ActiveView = 'hero-settings' | 'services' | 'news' | 'leadership'|'announcement'|'gallery'|'user';
 
 export interface NavItem {
   key: ActiveView;
@@ -68,6 +68,12 @@ export const NAV_ITEMS: NavItem[] = [
   {
     key: 'gallery',
     label: 'gallery setting',
+    badge: 'Active',
+    icon: LEADERSHIP_ICON,
+  },
+   {
+    key: 'user',
+    label: 'User Managemant',
     badge: 'Active',
     icon: LEADERSHIP_ICON,
   },

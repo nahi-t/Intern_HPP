@@ -1,6 +1,8 @@
+// src/components/Hero.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'; // ✅ Import Next.js Image
 import { useHeroData } from '@/hooks/home/useHeroData';
 
 const Hero: React.FC = () => {
@@ -22,13 +24,22 @@ const Hero: React.FC = () => {
 
   const { titleLine1, titleLine2, subtitle, primaryButton, secondaryButton } = data;
 
-  const currentImage = data.backgroundImages[currentIndex];
+  // Add a safe fallback in case the data is missing
+  const currentImage = data.backgroundImages?.[currentIndex] || '/images/hero-fallback.jpg';
 
   return (
-    <section
-      className="relative w-full h-screen flex items-center bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
-      style={{ backgroundImage: `url(${currentImage})` }}
-    >
+    <section className="relative w-full h-[85vh] sm:h-[90vh] md:h-screen flex items-center overflow-hidden">
+      
+      {/* ✅ Optimized Background Image using Next.js Image */}
+      <Image
+        src={currentImage}
+        alt="Hero Background"
+        fill
+        priority // LCP optimization: Load this image immediately
+        sizes="100vw" // Tells Next.js to serve different sizes for mobile and desktop
+        className="object-cover object-center"
+      />
+
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />
 
@@ -54,7 +65,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Slider Indicators (Dots) */}
-      {data.backgroundImages.length > 1 && (
+      {data.backgroundImages?.length > 1 && (
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2">
           {data.backgroundImages.map((_: string, idx: number) => (
             <button

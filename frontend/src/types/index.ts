@@ -76,3 +76,12 @@ export interface AnnouncementItem {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface User {
+  id: string; // or number, depending on your backend
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string; // optional when fetching, required for create/update
+  role: Role;
+}
