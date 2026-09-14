@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
               <p>
                 <span className="font-semibold text-red-300">Address:</span><br />
                 Harari Regional State,<br />
-                Jigjiga, Ethiopia
+                Harari, Ethiopia
               </p>
               <p>
                 <span className="font-semibold text-red-300">Phone:</span><br />
