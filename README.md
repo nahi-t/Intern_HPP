@@ -32,9 +32,8 @@ docker-compose up -d db
 ```bash
 cd backend
 npm install
-npx prisma generate
-npx prisma db push
-npx ts-node prisma/seed.ts
+
+
 npm run start:dev
 ```
 
@@ -46,5 +45,5 @@ npm run dev
 ```
 
 ## Admin Credentials
-- **Email**: admin@harari.gov.et
+
 - **Password**: password123
