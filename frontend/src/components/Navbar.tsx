@@ -9,15 +9,11 @@ import { useAuth } from '@/contexts/AuthContext';
 const NAV_ITEMS = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
-    { label: 'news', href: '/news' },
-    
-      { label: 'Rehabilitation', href: '/rehabilitation' },
-         { label: 'Gallery', href: '/gallery' },
-
-
-
+  { label: 'news', href: '/news' },
+  { label: 'Rehabilitation', href: '/rehabilitation' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'department', href: '/departments' },
-   { label: 'contact', href: '/contact' },
+  { label: 'contact', href: '/contact' },
 ];
 
 const Navbar: React.FC = () => {
@@ -150,12 +146,6 @@ const Navbar: React.FC = () => {
                     >
                       Dashboard
                     </Link>
-                    <span className="text-sm text-gray-600 px-2">
-                      {user.firstName} {user.lastName}
-                      <span className="ml-2 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-                        {user.role}
-                      </span>
-                    </span>
                     <button
                       onClick={handleLogout}
                       className="ml-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
@@ -252,12 +242,6 @@ const Navbar: React.FC = () => {
                   >
                     Dashboard
                   </Link>
-                  <div className="px-4 py-2 text-sm text-gray-600">
-                    {user.firstName} {user.lastName}
-                    <span className="ml-2 text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-                      {user.role}
-                    </span>
-                  </div>
                   <button
                     onClick={handleLogout}
                     className="w-full text-left px-4 py-3 rounded-lg text-base font-medium text-red-600 hover:bg-red-50"
